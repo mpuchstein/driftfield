@@ -4,7 +4,7 @@
 // that slowly fade. Simple local rules, complex global form, never the same
 // twice. Click to place a point of attention; drag to stir; press H for keys.
 
-import { config } from './config.js';
+import { config, PALETTE_ORDER } from './config.js';
 import {
   createGL, createFullscreenVAO, createLUTTexture, uploadLUT,
 } from './gl/context.js';
@@ -14,10 +14,18 @@ import { PaletteManager } from './palettes.js';
 import { Field } from './field.js';
 import { TextLayer } from './text.js';
 import { Ambient } from './audio.js';
+import { AmbientPilot } from './ambient_pilot.js';
 import { setupUI } from './ui.js';
 
 const glCanvas = document.getElementById('gl');
 const textCanvas = document.getElementById('text');
+
+// `?ambient` — autonomous "dreaming" mode for live wallpapers / screensavers:
+// the field steers itself and the UI is hidden, but it stays touchable.
+const params = new URLSearchParams(location.search);
+const AMBIENT = params.has('ambient');
+const startPalette = params.get('palette');
+if (AMBIENT) document.body.classList.add('ambient');
 
 function fail(msg) {
   document.getElementById('banner-msg').textContent = msg;
@@ -40,6 +48,12 @@ uploadLUT(gl, lutTex, palette.pixels);
 const field = new Field();
 const text = new TextLayer(textCanvas);
 const audio = new Ambient();
+
+if (startPalette && PALETTE_ORDER.includes(startPalette)) {
+  config.paletteName = startPalette;
+  palette.setTarget(startPalette);
+}
+const pilot = AMBIENT ? new AmbientPilot(field, palette) : null;
 
 let dpr = 1;
 function resize() {
@@ -141,6 +155,7 @@ function frame(now) {
   lastDt = dt;
 
   field.update(dt);
+  if (pilot && !config.paused) pilot.update(dt);
 
   if (!config.paused) {
     simTime += dt;

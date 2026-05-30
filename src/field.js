@@ -33,6 +33,16 @@ export class Field {
     this._ring = 0;
   }
 
+  // Ambient autopilot owns attractor slot 0 — a single slowly-roaming point of
+  // attention. User-placed points (addAttractor) fill later slots, so the field
+  // stays touchable even while it dreams to itself.
+  setRoamingAttractor(x, y, strength) {
+    this.attractors[0] = x;
+    this.attractors[1] = y;
+    this.attractors[2] = strength;
+    if (this.attractorCount < 1) this.attractorCount = 1;
+  }
+
   // Called on pointer move while a drag is in progress.
   stir(x, y, dt) {
     if (this._last && dt > 0) {

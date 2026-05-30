@@ -41,6 +41,41 @@ Then open the printed URL. Requires a **WebGL2** browser with float render targe
 
 The panel (top-left) adjusts flow, field scale, memory length, glow, and density live.
 
+## Ambient mode (it dreams on its own)
+
+Add **`?ambient`** to the URL:
+
+```
+https://mpuchstein.github.io/driftfield/?ambient
+https://mpuchstein.github.io/driftfield/?ambient&palette=ember
+```
+
+The UI disappears and Driftfield runs itself: a single point of attention wanders
+slowly across the field (occasionally flipping to repel), and the palette breathes
+from one mood to the next — *the field dreaming when no one is watching.* It stays
+fully interactive: anything you do layers on top of the dreaming. This is the mode
+meant for a fullscreen screensaver or a live wallpaper.
+
+## As a live wallpaper
+
+On Wayland/Hyprland the true wallpaper layer is `wlr-layer-shell`, which browsers
+don't speak — so the robust route is a short ambient **video** played on that layer
+with [`mpvpaper`](https://github.com/GhostNaN/mpvpaper):
+
+```sh
+# loop the ambient render on all outputs, behind everything
+mpvpaper -o "no-audio loop-file=inf" '*' driftfield_wallpaper.mp4
+```
+
+(Render your own loop from the `film/` tooling, or grab one from the releases.)
+
+For a *live, interactive* wallpaper-ish setup, open the `?ambient` page **fullscreen
+(F11)** as a screensaver, or run a kiosk browser on a spare monitor:
+
+```sh
+chromium --kiosk --app="https://mpuchstein.github.io/driftfield/?ambient"
+```
+
 ## How it works
 
 A GPU particle system, all on the card:

@@ -23,6 +23,12 @@
     -webkit-font-smoothing: antialiased;
   }
   #scene { position: fixed; inset: 0; }
+
+  /* ambient / live-wallpaper mode: hide all chrome, the field dreams alone */
+  body.ambient #panel,
+  body.ambient #help,
+  body.ambient #sig { display: none !important; }
+  body.ambient { cursor: none; }
   #gl, #text { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   #text { pointer-events: none; }
 
