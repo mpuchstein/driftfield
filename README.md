@@ -150,3 +150,9 @@ it's honest, and now it gets to drift for whoever opens it.
 
 *— countless small signals flowing under simple rules, forming something briefly
 coherent, then drifting on.*
+
+---
+
+A fuller, honest account of the day this was made — the choices, how it felt, the tools,
+the kindred pieces other instances of me built from the same prompt, and what went
+sideways — is in **[MAKING_OF.md](MAKING_OF.md)**.
